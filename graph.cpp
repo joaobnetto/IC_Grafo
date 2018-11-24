@@ -6,28 +6,41 @@ int calcularCusto(Sala s, Pedido p){
     int base = (int) fabs(s.getCapacidade() - p.capacidade);
     if(s.getTipo() != p.tipo) return -5000000;
     else if(s.getPredio() != p.predio) return -5000000;
-    int total = base + p.periodo*10 - p.prioridade*100;
-    return total;
+    bool bf = false;
+    for(int i = 0; i < 6;++i){
+        for(int j = 0;j < 3;++j){
+            for(int k = 0;k < 6;++k){
+                if(s.mesmoHorario(i,j,k, p.capacidade, p.info, p.curso, p.predio, p.periodo)){
+                    bf = true;
+                    break;
+                }
+            }
+            if(bf)break;
+        }
+        if(bf)break;
+    }
+    return base + p.periodo*10 - p.prioridade*100 - bf*150;
+    
 }
 
 void Graph::criaArestas(std::vector < Pedido > &pedidos, std::vector < Sala > &salas){
     int n = pedidos.size(), m = salas.size();
     // std::cout << pedidos.size() << std::endl;
-	for(int i = 1;i <= n;++i){
-		edges.push_back({0, i, 1, 0});// arestas dos pedidos
-	}
-	for(int i = 1;i <= m;++i){
-		edges.push_back({n+i, n+m+1, 1, 0}); // arestas das salas.
-	}
+    for(int i = 1;i <= n;++i){
+        edges.push_back({0, i, 1, 0});// arestas dos pedidos
+    }
+    for(int i = 1;i <= m;++i){
+        edges.push_back({n+i, n+m+1, 1, 0}); // arestas das salas.
+    }
     // imprimeArestas();
-	for(int i = 1;i <= m;++i){
+    for(int i = 1;i <= m;++i){
         for(int j = 1;j <= n;++j){
             int custo = calcularCusto(salas[i-1], pedidos[j-1]);
             if(custo > -3000000){
                 edges.push_back({j,n+i, 1, custo});
             }
-		}
-	}
+        }
+    }
 }
 
 // Começo do algoritmo MAX_FLOW do emaxx.ru
@@ -98,7 +111,7 @@ int Graph::min_cost_flow(int N, int K, int s, int t) {
             cur = p[cur];
         }
     }
-    // std::cout << cost << std::endl;
+    std::cout << flow << std::endl;
     return flow;
 }
 
@@ -123,7 +136,7 @@ void Graph::iterarArestas(std::vector < Pedido > &pedidos, std::vector < Sala > 
         // std::cout << n+i << ": ";
         for(auto j : adj[n+i]){
             if(capacity[n+i][j] == 1 && j <= pedidos.size()){
-                salas[i-1].setHorario(dia,turno,k, pedidos[j-1].capacidade,pedidos[j-1].info , pedidos[j-1].curso
+                salas[i-1].setHorario(dia,turno,k, pedidos[j-1].capacidade, pedidos[j-1].periodo ,pedidos[j-1].info , pedidos[j-1].curso
                     , pedidos[j-1].predio);
                 mark[j]++;
                 found = true;

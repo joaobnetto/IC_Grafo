@@ -19,7 +19,7 @@ private:
 	int capacidade;
 	std::string predio, nome, tipo;
 	struct Horario{
-		int existe, capacidade;
+		int existe, capacidade, periodo;
 		std::string info, curso, predio;
 	};
 	Horario horas[6][3][6];
@@ -37,14 +37,24 @@ public:
 	std::string getPredio(){return predio;};
 	std::string getNome(){return nome;};
 	std::string getTipo(){return tipo;};
-	void setHorario(int i, int j, int k, int capacidade, std::string info, std::string curso, std::string predio){
-		Horario tmp = {1,capacidade,info,curso,predio};
+	void setHorario(int i, int j, int k, int capacidade, int periodo, std::string info, std::string curso, std::string predio){
+		Horario tmp = {1,capacidade,periodo, info,curso,predio};
 		horas[i][j][k] = tmp;
+	}
+	bool existeHorario(int i, int j, int k) {return horas[i][j][k].existe;}
+
+	bool mesmoHorario(int i, int j, int k, int capacidade, std::string info, std::string curso, std::string predio, int periodo){
+		if(!existeHorario(i,j,k)) return 0;
+		Horario tmp = horas[i][j][k];
+		if(tmp.capacidade == capacidade && info == tmp.info 
+			&& curso == tmp.curso && predio == tmp.predio && periodo == tmp.periodo) return true;
+		return 0;
 	}
 	void imprimeHorario(int i, int j, int k){
 		Horario tmp = horas[i][j][k];
 		if(tmp.existe){
-			std::cout << tmp.info << ", " << tmp.curso << ", " << tmp.predio << ", " << tmp.capacidade << "                   ";
+			std::cout << tmp.info << ", " << tmp.curso << ", " 
+			<< tmp.predio << ", " << tmp.capacidade << " " << tmp.periodo << "             ";
 		}
 		else std::cout << "VAZIO\n";
 	}
