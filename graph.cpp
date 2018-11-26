@@ -1,11 +1,17 @@
 #include "graph.h"
 
+
 // Facilmente editar o custo das arestas, faz poder modificar a alocação sem modificar a estrutura.
 
 int calcularCusto(Sala s, Pedido p){
+    Group g;
+    int k = 0;
     int base = (int) fabs(s.getCapacidade() - p.capacidade);
+    int ratio = s.getCapacidade() * 100 / p.capacidade;
     if(s.getTipo() != p.tipo) return -5000000;
-    else if(s.getPredio() != p.predio) return -5000000;
+    else if(ratio < 80) return -5000000;
+    else if(g.getGroup(s.getPredio()) != g.getGroup(p.predio)) return -5000000;
+    else if(p.predio != s.getPredio()) k = 1;
     bool bf = false;
     for(int i = 0; i < 6;++i){
         for(int j = 0;j < 3;++j){
@@ -19,7 +25,7 @@ int calcularCusto(Sala s, Pedido p){
         }
         if(bf)break;
     }
-    return base + p.periodo*10 - p.prioridade*100 - bf*150;
+    return base + p.periodo*10 - p.prioridade*100 - bf*150 + k*50;
     
 }
 
@@ -111,7 +117,7 @@ int Graph::min_cost_flow(int N, int K, int s, int t) {
             cur = p[cur];
         }
     }
-    std::cout << flow << std::endl;
+    // std::cout << flow << std::endl;
     return flow;
 }
 

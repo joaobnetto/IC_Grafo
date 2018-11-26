@@ -7,6 +7,22 @@
 #include "sala.h"
 const int INFI = 1e9;
 
+class Group{
+	private: 
+		std::map < std::string , int > g;
+	public:
+		int getGroup(std::string predio){
+			return g[predio];
+		}
+		Group(){
+			g["CAA"] = g["CAB"] = g["CAC"] = g["INF"] = 1;
+			g["IQ"] = 2;
+			g["FEFD"] = 3;
+			g["CAD"] = 4;
+		}
+
+};
+
 class Graph{
 private:
 	struct Edge{

@@ -5,6 +5,6 @@ int main(){
 	alocacao.lerSalas();
 	alocacao.lerPedidos();
 	alocacao.alocar();
-	// alocacao.imprimirSalas();
-	// alocacao.imprimirNaoAlocados();
+	alocacao.imprimirSalas();
+	alocacao.imprimirNaoAlocados();
 }

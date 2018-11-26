@@ -1,5 +1,8 @@
 #include "alocar.h"
 std::string dia[6] = {"Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"};
+std::string hr[3][6] = {{"07:00-08:00", "08:00-08:50","08:50-09:40","10:00-10:50","10:50-11:40","11:40-12:30"},
+{"13:10-14:00","14:00-14:50","14:50-15:40","16:00-16:50","16:50-17:40","17:40-18:30"},
+{"18:50-19:35","19:35-20:20","20:30-21:15","21:15-22:00","-","-"}};
 
 // Leio os pedidos e os armazeno.
 
@@ -107,9 +110,13 @@ void Alocar::lerSalas(){
 void Alocar::imprimirSalas(){
 	for(auto z : salas){
 		Sala tmp = z;
-		std::cout << "Sala: " <<  z.getNome() << ",Predio: " << z.getPredio() << ",Capacidade: " << z.getCapacidade() << std::endl;
+		std::cout << "Sala: " << z.getNome() << " Predio: " << z.getPredio() << " Capacidade: " << z.getCapacidade() 
+			<< " Tipo: "  << z.getTipo() <<",";
+		std::cout << "Segunda,Terça,Quarta,Quinta,Sexta,Sabado\n";  
 		for(int j = 0;j < 3;++j){
 			for(int k = 0;k < 6;++k){
+				if(j == 2 && k >= 4) continue;
+				std::cout << hr[j][k] << ",";
 				for(int i = 0;i < 6;++i){
 					z.imprimeHorario(i, j, k);
 				}
@@ -148,7 +155,7 @@ void Alocar::imprimirPedidos(){
 // Imprimo o que não foi alocado.
 
 void Alocar::imprimirNaoAlocados(){
-	std::cout << nao_alocados.size() << std::endl;
+	std::cout << "Nao Alocados: " << nao_alocados.size() << "\n";
 	for(auto i : nao_alocados){
 		std::cout << i.info << " " << i.curso << " " << i.tipo << " " << i.predio << " " << i.capacidade << std::endl;
 	}
@@ -156,6 +163,7 @@ void Alocar::imprimirNaoAlocados(){
 
 // Aloco os pedidos, usando o min-cost max-flow, para cada horário crio um grafo e faço isso.
 void Alocar::alocar(){
+ 	Group novo();
 	for(int i = 0;i < 6;++i){
 		// std::cout << dia[i] << ":\n";
 		for(int j = 0;j < 3;++j){

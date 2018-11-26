@@ -53,10 +53,10 @@ public:
 	void imprimeHorario(int i, int j, int k){
 		Horario tmp = horas[i][j][k];
 		if(tmp.existe){
-			std::cout << tmp.info << ", " << tmp.curso << ", " 
-			<< tmp.predio << ", " << tmp.capacidade << " " << tmp.periodo << "             ";
+			std::cout << tmp.info << " Curso: " << tmp.curso << " Predio: " 
+			<< tmp.predio << " Capacidade: " << tmp.capacidade << " Periodo: " << tmp.periodo << ",";
 		}
-		else std::cout << "VAZIO\n";
+		else std::cout << "VAZIO, ";
 	}
 	bool operator<(Sala B){
 		int pr = predio.compare(B.getPredio()), nm = nome.compare(B.getNome()), tp = tipo.compare(B.getTipo());
