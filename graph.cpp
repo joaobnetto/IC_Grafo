@@ -5,6 +5,7 @@
 
 int calcularCusto(Sala s, Pedido p){
     Group g;
+    // Group::getGroup();
     int k = 0;
     int base = (int) fabs(s.getCapacidade() - p.capacidade);
     int ratio = s.getCapacidade() * 100 / p.capacidade;
